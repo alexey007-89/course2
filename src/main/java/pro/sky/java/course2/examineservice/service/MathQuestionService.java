@@ -3,47 +3,48 @@ package pro.sky.java.course2.examineservice.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course2.examineservice.domain.Question;
-import pro.sky.java.course2.examineservice.repository.JavaQuestionRepository;
+import pro.sky.java.course2.examineservice.repository.MathQuestionRepository;
 
 import java.util.*;
 
 @Service
-@Qualifier("javaQuestionService")
-public class JavaQuestionService implements QuestionService {
-    private final JavaQuestionRepository javaQuestionRepository;
+@Qualifier("mathQuestionService")
+public class MathQuestionService implements QuestionService {
+    private final MathQuestionRepository mathQuestionRepository;
 
-    public JavaQuestionService(JavaQuestionRepository javaQuestionRepository) {
-        this.javaQuestionRepository = javaQuestionRepository;
+    public MathQuestionService(MathQuestionRepository mathQuestionRepository) {
+        this.mathQuestionRepository = mathQuestionRepository;
     }
 
     @Override
+
     public Question add(String question, String answer) {
         Question newQuestion = new Question(question, answer);
-        javaQuestionRepository.add(newQuestion);
+        mathQuestionRepository.add(newQuestion);
         return newQuestion;
     }
 
     @Override
     public Question add(Question question) {
-        javaQuestionRepository.add(question);
+        mathQuestionRepository.add(question);
         return question;
     }
 
     @Override
     public Question remove(Question question) {
-        javaQuestionRepository.remove(question);
+        mathQuestionRepository.remove(question);
         return question;
     }
 
     @Override
     public Collection<Question> getAll() {
-        return javaQuestionRepository.getAll();
+        return mathQuestionRepository.getAll();
     }
 
     @Override
     public Question getRandomQuestion() {
         Random random = new Random();
-        List<Question> questionList = new ArrayList<>(javaQuestionRepository.getAll());
+        List<Question> questionList = new ArrayList<>(mathQuestionRepository.getAll());
         return questionList.get(random.nextInt(questionList.size()));
     }
 }

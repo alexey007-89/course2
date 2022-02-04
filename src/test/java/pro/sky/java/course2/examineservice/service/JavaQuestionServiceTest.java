@@ -1,87 +1,64 @@
 package pro.sky.java.course2.examineservice.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.java.course2.examineservice.domain.Question;
+import pro.sky.java.course2.examineservice.repository.JavaQuestionRepository;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static pro.sky.java.course2.constant.QuestionsConstants.*;
 
+@ExtendWith(MockitoExtension.class)
 class JavaQuestionServiceTest {
-    private final JavaQuestionService out = new JavaQuestionService();
-    Set<Question> expected = new HashSet<>();
 
-    @BeforeEach
-    public void SetUp() {
-        expected.add(QUESTION_1);
-        expected.add(QUESTION_2);
-        expected.add(QUESTION_3);
-        expected.add(QUESTION_4);
-        expected.add(QUESTION_5);
-    }
+    @Mock
+    private JavaQuestionRepository javaQuestionRepositoryMock;
+
+    @InjectMocks
+    private JavaQuestionService out;
 
     @Test
     void shouldAddByQuestionAndAnswerWorkCorrect() {
-        out.add(QUESTION_1.getQuestion(), QUESTION_1.getAnswer());
-        out.add(QUESTION_1.getQuestion(), QUESTION_1.getAnswer());
-        out.add(QUESTION_2.getQuestion(), QUESTION_2.getAnswer());
-        out.add(QUESTION_3.getQuestion(), QUESTION_3.getAnswer());
-        out.add(QUESTION_4.getQuestion(), QUESTION_4.getAnswer());
-        out.add(QUESTION_5.getQuestion(), QUESTION_5.getAnswer());
-        assertEquals(expected,out.getAll());
+        when(javaQuestionRepositoryMock.add(JAVA_QUESTION_1))
+                .thenReturn(JAVA_QUESTION_1);
+        assertEquals(JAVA_QUESTION_1, out.add(JAVA_QUESTION_1.getQuestion(), JAVA_QUESTION_1.getAnswer()));
+        verify(javaQuestionRepositoryMock, times(1)).add(JAVA_QUESTION_1);
     }
 
     @Test
     void shouldAddWorkCorrect() {
-        out.add(QUESTION_1);
-        out.add(QUESTION_1);
-        out.add(QUESTION_2);
-        out.add(QUESTION_3);
-        out.add(QUESTION_4);
-        out.add(QUESTION_5);
-        assertEquals(expected,out.getAll());
-    }
-
-    @Test
-    void shouldAddByQuestionAndAnswerReturnQuestionCorrect() {
-        assertEquals(QUESTION_1,out.add(QUESTION_1.getQuestion(),QUESTION_1.getAnswer()));
-    }
-
-    @Test
-    void shouldAddReturnQuestionCorrect() {
-        assertEquals(QUESTION_1,out.add(QUESTION_1));
+        when(javaQuestionRepositoryMock.add(JAVA_QUESTION_1))
+                .thenReturn(JAVA_QUESTION_1);
+        assertEquals(JAVA_QUESTION_1, out.add(JAVA_QUESTION_1));
+        verify(javaQuestionRepositoryMock, times(1)).add(JAVA_QUESTION_1);
     }
 
     @Test
     void shouldRemoveWorkCorrect() {
-        out.add(QUESTION_1);
-        out.add(QUESTION_2);
-        out.add(QUESTION_3);
-        out.add(QUESTION_4);
-        out.add(QUESTION_5);
-        out.remove(QUESTION_5);
-        out.remove(QUESTION_5);
-        out.remove(QUESTION_4);
-        expected.remove(QUESTION_5);
-        expected.remove(QUESTION_4);
-        assertEquals(expected,out.getAll());
-    }
-
-    @Test
-    void shouldRemoveReturnQuestionCorrect() {
-        assertEquals(QUESTION_1,out.remove(QUESTION_1));
+        when(javaQuestionRepositoryMock.remove(JAVA_QUESTION_1))
+                .thenReturn(JAVA_QUESTION_1);
+        assertEquals(JAVA_QUESTION_1, out.remove(JAVA_QUESTION_1));
+        verify(javaQuestionRepositoryMock, times(1)).remove(JAVA_QUESTION_1);
     }
 
     @Test
     void shouldGetAllWorkCorrect() {
-        out.add(QUESTION_1);
-        out.add(QUESTION_2);
-        out.add(QUESTION_3);
-        out.add(QUESTION_4);
-        out.add(QUESTION_5);
-        assertEquals(expected,out.getAll());
+        Collection<Question> expected = new HashSet<>();
+        expected.add(JAVA_QUESTION_1);
+        expected.add(JAVA_QUESTION_2);
+        expected.add(JAVA_QUESTION_3);
+        expected.add(JAVA_QUESTION_4);
+        expected.add(JAVA_QUESTION_5);
+        when(javaQuestionRepositoryMock.getAll())
+                .thenReturn(expected);
+        assertEquals(expected, out.getAll());
     }
+
 }
